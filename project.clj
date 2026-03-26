@@ -8,5 +8,8 @@
                  [metosin/reitit "0.7.0"]
                  [metosin/reitit-ring "0.7.0"]
                  [cheshire/cheshire "5.12.0"]
-                 [clj-http/clj-http "3.12.3"]]
+                 [clj-http/clj-http "3.12.3"]
+                 [hiccup/hiccup "2.0.0"]
+                 [org.clojure/tools.logging "1.3.1"]
+                 [org.slf4j/slf4j-simple "2.0.16"]]
   :source-paths ["src"])

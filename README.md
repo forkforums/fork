@@ -19,22 +19,11 @@ This MVP is intentionally small:
 
 - Clojure
 - Ring
-- Reitit
-- Cheshire
-- clj-http
-
-## Project Layout
+- Hiccup
 
 - `src/fork/core.clj` - server startup and route wiring
 - `src/fork/store.clj` - in-memory atoms and query helpers
-- `src/fork/actor.clj` - ActivityPub-style forum actor
-- `src/fork/outbox.clj` - forum outbox generation
-- `src/fork/discovery.clj` - WebFinger response and forum resolution
-- `src/fork/federation.clj` - background polling worker
-- `src/fork/http/handler/forum.clj` - forum, post, and subscribe handlers
-- `src/fork/http/handler/feed.clj` - aggregated feed handler
-
-## Requirements
+- `src/fork/http/handler/ui.clj` - HTML dashboard and forum pages
 
 - Java installed
 - Leiningen installed
@@ -43,16 +32,22 @@ This MVP is intentionally small:
 
 Start a single node on the default port:
 
+
+Then open `http://localhost:5000` in your browser.
 ```bash
 lein run
 ```
 
 Start a node on a custom port:
 
-```bash
-FORK_PORT=5001 FORK_BASE_URL=http://localhost:5001 lein run
-```
+### Frontend
 
+- `GET /` - dashboard UI
+- `GET /forums/:forum` - forum page UI
+
+### Service
+
+- `GET /health`
 ### Environment Variables
 
 - `FORK_PORT` - HTTP port, defaults to `5000`
@@ -63,6 +58,13 @@ FORK_PORT=5001 FORK_BASE_URL=http://localhost:5001 lein run
 ## Dev Script
 
 Use the included script to start a local node with sensible defaults:
+
+Open the dashboard:
+
+```bash
+xdg-open http://localhost:5001
+```
+
 
 ```bash
 ./dev.sh
@@ -110,7 +112,7 @@ The script sets:
 Create a forum:
 
 ```bash
-curl -X POST http://localhost:5001/forum \
+curl -X POST http://localhost:5002/forum \
   -H 'Content-Type: application/json' \
   -d '{"name":"tech"}'
 ```

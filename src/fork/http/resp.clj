@@ -3,8 +3,16 @@
 
 (defn response [html]
   {:status 200
-   :headers {"Content-Type" "text/html"}
+   :headers {"Content-Type" "text/html; charset=utf-8"}
    :body html})
+
+(defn redirect-response
+  ([location]
+   (redirect-response location 303))
+  ([location status]
+   {:status status
+    :headers {"Location" location}
+    :body ""}))
 
 (defn json-response
   ([data]

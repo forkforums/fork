@@ -4,9 +4,8 @@
 (defonce db
   (atom {:forums {}
          :posts {}
-         :subscriptions #{}
          :remote-forum-cache {}
-         :seeds #{}}))
+         :peers #{}}))
 
 (defn normalize-forum-name [forum]
   (some-> forum str str/trim str/lower-case not-empty))
@@ -16,6 +15,9 @@
 
 (defn local-forum? [forum]
   (true? (get-in @db [:forums forum :local?])))
+
+(defn forums []
+  (vals (:forums @db)))
 
 (defn create-forum! [forum actor-url]
   (swap! db assoc-in [:forums forum]
@@ -30,9 +32,9 @@
 (defn list-forums []
   (vals (:forums @db)))
 
-(defn cache-remote-forum! [forum actor-url]
-  (swap! db assoc-in [:remote-forum-cache forum] actor-url)
-  actor-url)
+(defn sync-remote-forum! [forum actor-urls]
+  (swap! db assoc-in [:remote-forum-cache forum] actor-urls)
+  actor-urls)
 
 (defn cached-remote-forum [forum]
   (get-in @db [:remote-forum-cache forum]))
@@ -40,23 +42,13 @@
 (defn remote-forum-cache []
   (:remote-forum-cache @db))
 
-(defn add-seed! [seed-url]
-  (when (seq seed-url)
-    (swap! db update :seeds conj seed-url))
-  (:seeds @db))
+(defn add-peer! [peer-url]
+  (when (and (seq peer-url) (not (contains? (:peers @db) peer-url)))
+    (swap! db update :peers conj peer-url))
+  (:peers @db))
 
-(defn seeds []
-  (:seeds @db))
-
-(defn subscribe! [forum]
-  (swap! db update :subscriptions conj forum)
-  (:subscriptions @db))
-
-(defn subscriptions []
-  (:subscriptions @db))
-
-(defn subscribed? [forum]
-  (contains? (:subscriptions @db) forum))
+(defn peers []
+  (:peers @db))
 
 (defn upsert-post! [post]
   (swap! db assoc-in [:posts (:id post)] post)
@@ -81,8 +73,7 @@
        vec))
 
 (defn feed-posts []
-  (let [subs (subscriptions)]
+  (let [forums (forums)]
     (->> (all-posts)
-         (filter #(or (local-forum? (:forum %))
-                      (contains? subs (:forum %))))
+         (filter #(contains? (set forums) (:forum %)))
          vec)))

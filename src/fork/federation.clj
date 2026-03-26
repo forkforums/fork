@@ -1,5 +1,6 @@
 (ns fork.federation
-  (:require [clj-http.client :as http]
+  (:require [clojure.tools.logging :as log]
+            [clj-http.client :as http]
             [clojure.string :as str]
             [fork.discovery :as discovery]
             [fork.store :as store]))
@@ -28,13 +29,13 @@
            (get-in response [:body :orderedItems] [])))))
 
 (defn sync-forum! [forum]
-  (when-not (store/local-forum? forum)
-    (when-let [actor-url (discovery/resolve-forum forum)]
+  (when-let [actor-urls (discovery/resolve-forum forum)]
+    (doseq [actor-url actor-urls]
       (doseq [post (fetch-outbox-posts forum actor-url)]
         (store/upsert-post! post)))))
 
-(defn sync-subscriptions! []
-  (doseq [forum (store/subscriptions)]
+(defn sync-forums! []
+  (doseq [forum (store/forums)]
     (sync-forum! forum)))
 
 (defn stop-worker! []
@@ -47,8 +48,9 @@
     (let [running-future
           (future
             (while true
+              (log/info "Running federation sync...")
               (try
-                (sync-subscriptions!)
+                (sync-forums!)
                 (catch Exception _))
               (Thread/sleep 10000)))]
       (reset! worker-state {:running? true :future running-future})))

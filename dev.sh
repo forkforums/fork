@@ -14,7 +14,6 @@ if [[ -n "$SEEDS" ]]; then
   export FORK_SEEDS="$SEEDS"
 fi
 
-echo "Starting Fork on ${FORK_BASE_URL}"
 if [[ -n "${FORK_SEEDS:-}" ]]; then
   echo "Using seeds: ${FORK_SEEDS}"
 fi

@@ -1,16 +1,27 @@
 (ns fork.http.handler.wellknown
   (:require [fork.discovery :as discovery]
             [fork.http.resp :as resp]
-            [fork.forum :as forum]
-            [fork.store :as store]))
+            [fork.store :as store]
+            [fork.http.req :refer [request-base-url]]))
+
+(defn- webfinger-resource [request]
+  (or (get-in request [:params :resource])
+      (get-in request [:params "resource"])
+      (get-in request [:query-params :resource])
+      (get-in request [:query-params "resource"])))
 
 (defn webfinger-handler [request]
-  (let [forum-name (some-> (get-in request [:query-params "resource"])
+  (let [resource (webfinger-resource request)
+        forum-name (some-> resource
                            discovery/parse-resource
                            store/normalize-forum-name)
         forum-data (and forum-name (store/get-forum forum-name))]
-    (if (and forum-data (:local? forum-data))
+    (cond
+      (nil? resource)
+      (resp/bad-request-response "resource query parameter is required")
+      (and forum-data (:local? forum-data))
       (resp/json-response
-       (discovery/webfinger-response (str (forum/request-base-url request) "/actor/" forum-name)
+       (discovery/webfinger-response (str (request-base-url request) "/actor/" forum-name)
                                      forum-name))
+      :else
       (resp/not-found-response))))
