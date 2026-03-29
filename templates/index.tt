@@ -1,0 +1,33 @@
+[% WRAPPER 'layout.tt' title = 'Join a forum' %]
+<section class="panel">
+  <h2>Join a forum</h2>
+  <p>Enter the forum name you want this server to join. If it already exists locally, you will be taken straight to it.</p>
+  <form method="post" action="/f">
+    <div class="field">
+      <label for="forum">Forum name</label>
+      <input id="forum" name="forum" type="text" placeholder="gardening" autocomplete="off" required>
+    </div>
+    <div class="actions">
+      <button type="submit">Join forum</button>
+    </div>
+  </form>
+</section>
+
+<section class="panel">
+  <h2>Known forums</h2>
+  [% IF forums.size %]
+    <ul>
+      [% FOREACH forum IN forums %]
+        <li>
+          <a href="/f/[% forum.id | html %]">[% forum.id | html %]</a>
+          [% IF forum.created_at %]
+            <span class="meta">joined [% forum.created_at | html %]</span>
+          [% END %]
+        </li>
+      [% END %]
+    </ul>
+  [% ELSE %]
+    <p class="meta">No forums have been joined yet.</p>
+  [% END %]
+</section>
+[% END %]

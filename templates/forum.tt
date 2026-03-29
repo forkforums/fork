@@ -1,0 +1,28 @@
+[% WRAPPER 'layout.tt' title = forum.id %]
+<section class="panel">
+  <h2>Forum: [% forum.id | html %]</h2>
+  [% IF forum.created_at %]
+    <p class="meta">Joined on [% forum.created_at | html %]</p>
+  [% END %]
+  <p><a href="/">Return to the forum index</a></p>
+</section>
+
+<section class="panel">
+  <h2>Posts</h2>
+  [% IF messages.size %]
+    <ul class="posts">
+      [% FOREACH message IN messages %]
+        <li class="post">
+          <p class="meta">
+            [% IF message.created_at %][% message.created_at | html %][% ELSE %]Undated post[% END %]
+            · peer [% message.peer_id | html %]
+          </p>
+          <div class="post-body">[% message.content | html %]</div>
+        </li>
+      [% END %]
+    </ul>
+  [% ELSE %]
+    <p class="meta">No posts have been stored for this forum yet.</p>
+  [% END %]
+</section>
+[% END %]

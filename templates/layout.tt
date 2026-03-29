@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>[% title | html %] - Fork</title>
+    <link rel="stylesheet" href="/css/site.css">
+  </head>
+  <body>
+    <div class="page">
+      <header class="masthead">
+        <h1><a href="/">Fork</a></h1>
+        <p>A small clustered forum server built around ActivityPub groups.</p>
+      </header>
+      [% content %]
+    </div>
+  </body>
+</html>

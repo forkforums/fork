@@ -1,0 +1,117 @@
+:root {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background: #f7f2df;
+  color: #231f18;
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.45;
+}
+
+.page {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+a {
+  color: #6f220d;
+}
+
+a:hover {
+  color: #953013;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: normal;
+  margin: 0 0 0.75rem;
+}
+
+p,
+ul {
+  margin: 0 0 1rem;
+}
+
+.masthead {
+  border-bottom: 1px solid #b79f79;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+}
+
+.masthead p {
+  margin-bottom: 0;
+}
+
+.panel {
+  background: #fbf7ea;
+  border: 1px solid #cbb58f;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.field,
+.actions {
+  margin-bottom: 0.75rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+input[type="text"] {
+  width: 100%;
+  max-width: 28rem;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  border: 1px solid #8e7753;
+  background: #fffdf7;
+  font: inherit;
+}
+
+button {
+  border: 1px solid #8e7753;
+  background: #e8dcc0;
+  color: #231f18;
+  padding: 0.45rem 0.9rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #dfcfaa;
+}
+
+.meta {
+  color: #5f5344;
+  font-size: 0.95rem;
+}
+
+.posts {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.post {
+  border-top: 1px solid #d8c6a3;
+  padding: 1rem 0;
+}
+
+.post:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.post-body {
+  white-space: pre-wrap;
+}
+
+code {
+  font-family: "Courier New", monospace;
+  font-size: 0.95em;
+}
